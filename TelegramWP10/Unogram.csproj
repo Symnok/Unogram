@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">ARM</Platform>
+    <ProjectGuid>{4F0E3D1A-9B2C-4E7B-8D5A-6C9F1A2B3C4D}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TelegramWP10</RootNamespace>
+    <AssemblyName>Unogram</AssemblyName>
+    <DefaultLanguage>ru-RU</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <!-- Windows 10 Mobile 1709 = OS build 15254, branched from 15063 (1703).
+         15063 is the newest SDK whose API surface actually exists on the device.
+         Do NOT raise TargetPlatformVersion to 16299/17763/18362.
+         MinVersion 10240 covers every Windows 10 Mobile release from 1507 on;
+         anything above 10.0.15254.0 would block installation entirely. -->
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>TelegramWP10_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>2FEA123A6FCEA201A2EBA93410B99768417E81FB</PackageCertificateThumbprint>
+    <GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Never</AppxBundle>
+    <AppxBundlePlatforms>ARM</AppxBundlePlatforms>
+    <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 6.0.x (.NET Native 2.0) is the line that matches uap10.0.15063.
+         6.1.x/6.2.x require min version 10.0.16299 and will fail restore here. -->
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.0.15</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TdJson.cs" />
+    <!-- Telegram API credentials. Untracked; see Secrets.cs.template. Linked
+         rather than duplicated because both projects need it and they share no
+         namespace or project reference. -->
+    <Compile Include="..\Secrets.cs">
+      <Link>Secrets.cs</Link>
+    </Compile>
+    <Compile Include="CallsService.cs" />
+    <Compile Include="CallsSignalling.cs" />
+    <Compile Include="VoipInterop.cs" />
+    <Compile Include="BackgroundService.cs" />
+    <Compile Include="Loc.cs" />
+    <Compile Include="ChatItem.cs" />
+    <Compile Include="MessageItem.cs" />
+    <Compile Include="WebPDecoder.cs" />
+    <Compile Include="BassPlayer.cs" />
+    <Compile Include="StickerItem.cs" />
+    <Compile Include="ContactItem.cs" />
+    <Compile Include="SearchMessageItem.cs" />
+    <Compile Include="SearchResultItem.cs" />
+    <Compile Include="AvatarPlaceholder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Square150x150Logo.png" />
+    <Content Include="Assets\Square44x44Logo.png" />
+    <Content Include="Assets\Square24x24Logo.png" />
+    <Content Include="Assets\Wide310x150Logo.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <!-- tdjson.dll was listed twice in the original file (duplicate-item error) -->
+    <Content Include="tdjson.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libwebp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libsharpyuv.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- BASS — для проигрывания голосовых заметок (.oga/.ogg, Opus в
+         Ogg-контейнере), которые Media Foundation на Windows 10 Mobile
+         не декодирует. bass.dll — ядро, bassopus.dll — декодер Opus.
+         Файл читается в память штатным UWP API и передаётся BASS уже
+         закреплённым указателем — сам BASS файловую систему не трогает.
+         Оба файла нужно скачать вручную с un4seen.com (ARM-сборка под UWP)
+         и положить рядом с этим .csproj — сама среда сборки их не подтянет. -->
+    <Content Include="bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bassopus.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- libtgvoip: the Telegram VoIP stack (Opus, jitter buffer, echo cancellation,
+         audio capture and playback) as a C++/CX WinRT component, prebuilt for ARM32.
+
+         Referenced as a plain winmd on purpose, NOT via SDKReference. An SDKReference
+         injects a Microsoft.VCLibs.140.00 PackageDependency whose MinVersion comes from
+         whichever VCLibs extension SDK is on the build machine - currently 14.0.33519.0,
+         which no Windows 10 Mobile device can satisfy, and which ships no ARM32 payload.
+         The dependency is declared by hand in Package.appxmanifest instead. -->
+    <Reference Include="libtgvoip">
+      <HintPath>$(ProjectDir)Libraries\libtgvoip\$(Platform)\libtgvoip.winmd</HintPath>
+      <Implementation>libtgvoip.dll</Implementation>
+    </Reference>
+    <ReferenceCopyLocalPaths Include="$(ProjectDir)Libraries\libtgvoip\$(Platform)\libtgvoip.dll" />
+  </ItemGroup>
+
+  <!-- Give every build a distinct package version. Windows will not install a
+       sideloaded package whose version is not higher than the one already on the
+       device, so without this a rebuilt fix silently does not deploy and looks like
+       it did not work. AppxAutoIncrementPackageRevision only fires in the Store
+       packaging flow, not on a normal build or F5. Skip with
+       /p:BumpPackageVersion=false. -->
+  <Target Name="BumpPackageVersion" BeforeTargets="PrepareForBuild" Condition="'$(BumpPackageVersion)' != 'false'">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir)BumpVersion.ps1&quot; -Manifest &quot;$(ProjectDir)Package.appxmanifest&quot;"
+          StandardOutputImportance="high" />
+  </Target>
+
+  <!-- Fail loudly if someone tries to build a non-ARM platform or shifts the
+       supported OS range. This project is Windows 10 Mobile, ARM only. -->
+  <Target Name="EnforceArmOnlyMobile" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(Platform)' != 'ARM'" Text="Unogram builds for ARM only (Windows 10 Mobile). Requested platform: '$(Platform)'." />
+    <Error Condition="'$(TargetPlatformMinVersion)' != '10.0.10240.0'" Text="TargetPlatformMinVersion must remain 10.0.10240.0. Current value: '$(TargetPlatformMinVersion)'." />
+  </Target>
+  <!-- Генерируем rd.xml на лету — не нужно хранить в репозитории -->
+  <Target Name="GenerateRdXml" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <RdXmlPath>$(ProjectDir)Properties\Default.rd.xml</RdXmlPath>
+      <RdXmlContent><![CDATA[<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <Assembly Name="Unogram" Dynamic="Required All" />
+    <Assembly Name="Newtonsoft.Json" Dynamic="Required All" />
+  </Application>
+</Directives>]]></RdXmlContent>
+    </PropertyGroup>
+    <MakeDir Directories="$(ProjectDir)Properties" />
+    <WriteLinesToFile File="$(RdXmlPath)" Lines="$(RdXmlContent)" Overwrite="true" />
+    <ItemGroup>
+      <Content Include="$(RdXmlPath)" />
+    </ItemGroup>
+  </Target>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+</Project>
