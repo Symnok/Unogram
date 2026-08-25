@@ -158,6 +158,17 @@
     <ReferenceCopyLocalPaths Include="$(ProjectDir)Libraries\libtgvoip\$(Platform)\libtgvoip.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- UnogramBackground: winmd-компонент фоновой задачи догрузки сообщений
+         (windows.backgroundTasks в Package.appxmanifest). Ссылка нужна именно
+         для упаковки: без неё UnogramBackground.winmd не попадает в appx и хост
+         фоновых задач не может активировать UnogramBackground.CatchUpTask. -->
+    <ProjectReference Include="..\UnogramBackground\UnogramBackground.csproj">
+      <Project>{7C4B9E2D-3A15-4F68-9D07-5B2E1A6C8F34}</Project>
+      <Name>UnogramBackground</Name>
+    </ProjectReference>
+  </ItemGroup>
+
   <!-- Give every build a distinct package version. Windows will not install a
        sideloaded package whose version is not higher than the one already on the
        device, so without this a rebuilt fix silently does not deploy and looks like
@@ -183,6 +194,7 @@
   <Application>
     <Assembly Name="Unogram" Dynamic="Required All" />
     <Assembly Name="Newtonsoft.Json" Dynamic="Required All" />
+    <Assembly Name="UnogramBackground" Dynamic="Required All" />
   </Application>
 </Directives>]]></RdXmlContent>
     </PropertyGroup>
